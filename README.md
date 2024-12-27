@@ -19,6 +19,7 @@ The Convolutional Neural Network (CNN) is designed to process CIFAR-10’s RGB i
 - Multiple convolutional layers with batch normalization and ReLU activations.
 - Max-pooling layers for down-sampling.
 - Fully connected layers for classification into 10 classes.
+- Dropout layers for regularization.
 
 ## How to Run
 
@@ -31,7 +32,12 @@ The Convolutional Neural Network (CNN) is designed to process CIFAR-10’s RGB i
    ```bash
    uv sync
    ```
-3. Run the training script:
+3. **Optional**: Select the dataset size:
+    - To use the full dataset, set 'FULL_DATASET = True'
+    - To use a subset of the dataset, set 'FULL_DATASET = False'
+    
+    This change can be made in the 'train.py' script on line 16.
+4. Run the training script:
    ```bash
    uv run train.py
    ```

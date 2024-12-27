@@ -1,9 +1,8 @@
-import numpy as np
-import pandas as pd
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torch.utils.data import DataLoader, Dataset, random_split
+from torch.utils.data import DataLoader, random_split
 from torchvision import datasets, transforms
 from typing import Iterable
 from collections import OrderedDict
@@ -14,17 +13,23 @@ matplotlib.use('TkAgg')
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print('Device:', device)
 
+FULL_DATASET = False
+
 transform = transforms.Compose([
     transforms.ToTensor(),
     transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2470, 0.2435, 0.2616))
 ])
 dataset = datasets.CIFAR10(root='~/data', train=True, download=True, transform=transform)
 
-train_size = 600
-eval_size = 100
-rest = len(dataset) - train_size - train_size - eval_size
-
-train_dataset1, train_dataset2, eval_dataset, _ = random_split(dataset, [train_size, train_size, eval_size, rest])
+if FULL_DATASET:
+    train_size = int(0.4 * len(dataset))
+    eval_size = int(0.2 * len(dataset))
+    train_dataset1, train_dataset2, eval_dataset = random_split(dataset, [train_size, train_size, eval_size])
+else:
+    train_size = 600
+    eval_size = 200
+    rest_size = len(dataset) - train_size * 2 - eval_size
+    train_dataset1, train_dataset2, eval_dataset, _ = random_split(dataset, [train_size, train_size, eval_size, rest_size])
 
 train_loader1 = DataLoader(train_dataset1, batch_size=50, shuffle=True)
 train_loader2 = DataLoader(train_dataset2, batch_size=50, shuffle=True)
